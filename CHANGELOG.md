@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.0 (2025-11-02)
+
+
+### Features
+
+* 开发完成 ([975fa7c](https://github.com/KarinJS/plugin-playwright/commit/975fa7cad08c92d981111295f93f431eb474f39d))
+
+
+### Bug Fixes
+
+* example ([79418e2](https://github.com/KarinJS/plugin-playwright/commit/79418e2e9d02ffe29ed4c9064d898344398df616))
+
 ## [Unreleased]
 
 ### Added
