@@ -97,9 +97,10 @@ const main = async () => {
     const data = renderTpl(options)
     data.encoding = options.encoding
 
-    // 确保type兼容
+    // Playwright不支持webp，转换为png并记录警告
     if (data.type === 'webp') {
-      data.type = 'png' // Playwright不支持webp，转换为png
+      logger.warn(`[${name}] Playwright不支持webp格式，已自动转换为png`)
+      data.type = 'png'
     }
 
     const time = Date.now()

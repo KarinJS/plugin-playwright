@@ -32,8 +32,9 @@ const isHtmlFile = (str: string): boolean => {
  * 准备页面内容
  * @param page - 页面实例
  * @param options - 截图选项
+ * @param ctx - Playwright上下文
  */
-const preparePage = async (page: Page, options: ScreenshotOptions) => {
+const preparePage = async (page: Page, options: ScreenshotOptions, ctx: PlaywrightContext) => {
   const { file, file_type = 'auto', headers, timeout = 30000 } = options
 
   // 设置额外的HTTP头
@@ -100,7 +101,7 @@ const preparePage = async (page: Page, options: ScreenshotOptions) => {
   }
 
   // 等待网络空闲
-  const idleTime = options.timeout || 500
+  const idleTime = ctx.config.idleTime || 500
   if (idleTime > 0) {
     await page.waitForTimeout(idleTime)
   }
@@ -217,7 +218,7 @@ export const screenshot = async <T extends Encoding = 'binary', M extends MultiP
     try {
       const result = await withPage(ctx, async (page) => {
         // 准备页面
-        await preparePage(page, options)
+        await preparePage(page, options, ctx)
 
         let screenshots: Buffer | Buffer[]
 
