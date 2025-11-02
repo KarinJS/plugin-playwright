@@ -140,11 +140,15 @@ const webConfig: {
   /** 前端点击保存之后调用的方法 */
   save: (config: LaunchOptions) => {
     // 转换数字类型
+    const headlessValue = typeof config.headless === 'string' 
+      ? config.headless === 'true' 
+      : config.headless
+    
     config = {
       ...config,
       maxPages: Number(config.maxPages),
       idleTime: Number(config.idleTime),
-      headless: config.headless === 'true' || config.headless === true,
+      headless: headlessValue,
     }
 
     saveConfig(config)

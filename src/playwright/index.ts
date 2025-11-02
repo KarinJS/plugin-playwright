@@ -64,3 +64,4 @@ export const launch = async (options: LaunchOptions = {}) => {
 
 export * from './browser'
 export * from './screenshot'
+export type { LaunchOptions, ScreenshotOptions, Encoding, MultiPage } from '../types'

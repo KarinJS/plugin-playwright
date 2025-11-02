@@ -1,4 +1,4 @@
-import type { ScreenshotOptions as PlaywrightScreenshotOptions } from 'playwright'
+import type { PageScreenshotOptions as PlaywrightScreenshotOptions } from 'playwright'
 
 /**
  * 截图编码类型

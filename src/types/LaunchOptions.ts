@@ -3,7 +3,7 @@ import type { LaunchOptions as PlaywrightLaunchOptions } from 'playwright'
 /**
  * 浏览器初始化参数
  */
-export interface LaunchOptions extends PlaywrightLaunchOptions {
+export interface LaunchOptions extends Omit<PlaywrightLaunchOptions, 'logger'> {
   /**
    * 没有浏览器时下载的浏览器类型
    * @default 'chromium'

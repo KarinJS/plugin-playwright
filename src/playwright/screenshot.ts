@@ -1,7 +1,7 @@
 import type { Page } from 'playwright'
 import type { PlaywrightContext } from './browser'
 import type { ScreenshotOptions, Encoding, MultiPage, ScreenshotResult } from '../types'
-import { withPage, debug } from './browser'
+import { withPage, debugLog } from './browser'
 import { existsSync } from 'fs'
 import { readFile } from 'fs/promises'
 
@@ -62,7 +62,7 @@ const preparePage = async (page: Page, options: ScreenshotOptions) => {
     }
   } else if (file_type === 'vue3' || file_type === 'vueString') {
     // Vue3暂不支持，作为HTML处理
-    debug('Vue3暂不支持，作为HTML字符串处理')
+    debugLog('Vue3暂不支持，作为HTML字符串处理')
     await page.setContent(file, { waitUntil: 'networkidle', timeout })
   } else if (file_type === 'react') {
     // React暂不支持
@@ -144,7 +144,7 @@ const takeScreenshot = async (
         return await element.screenshot(screenshotOptions)
       }
     } catch (error) {
-      debug('截取元素失败，使用全页截图:', error)
+      debugLog('截取元素失败，使用全页截图:', error)
     }
   }
 
@@ -168,23 +168,21 @@ const multiPageScreenshot = async (
   const screenshots: Buffer[] = []
   
   // 获取页面总高度
-  const totalHeight = await page.evaluate(() => {
-    return Math.max(
+  const totalHeight = await page.evaluate(`
+    Math.max(
       document.body.scrollHeight,
       document.body.offsetHeight,
       document.documentElement.clientHeight,
       document.documentElement.scrollHeight,
       document.documentElement.offsetHeight
     )
-  })
+  `) as number
 
   const pages = Math.ceil(totalHeight / pageHeight)
 
   for (let i = 0; i < pages; i++) {
     // 滚动到指定位置
-    await page.evaluate((offset) => {
-      window.scrollTo(0, offset)
-    }, i * pageHeight)
+    await page.evaluate(`window.scrollTo(0, ${i * pageHeight})`)
 
     // 等待渲染完成
     await page.waitForTimeout(100)
@@ -251,7 +249,7 @@ export const screenshot = async <T extends Encoding = 'binary', M extends MultiP
         data: result,
       }
     } catch (error) {
-      debug(`截图失败 (尝试 ${i + 1}/${retry}):`, error)
+      debugLog(`截图失败 (尝试 ${i + 1}/${retry}):`, error)
       
       if (i === retry - 1) {
         return {

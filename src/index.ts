@@ -97,8 +97,13 @@ const main = async () => {
     const data = renderTpl(options)
     data.encoding = options.encoding
 
+    // 确保type兼容
+    if (data.type === 'webp') {
+      data.type = 'png' // Playwright不支持webp，转换为png
+    }
+
     const time = Date.now()
-    const result = await browser.screenshot(data)
+    const result = await browser.screenshot(data as any)
 
     const fileName = typeof data?.file === 'string' ? path.basename(data.file) : 'unknown'
 
@@ -106,7 +111,8 @@ const main = async () => {
       logger.info(
         `[${name}][${fileName}] 截图失败 耗时: ${logger.green(Date.now() - time + '')} ms`
       )
-      throw new Error(result.data.message || '截图失败', { cause: result.data })
+      const errorData = result.data as { message?: string }
+      throw new Error(errorData.message || '截图失败', { cause: result.data })
     }
 
     const sizeBytes = getScreenshotByteSize(result.data, options.encoding)

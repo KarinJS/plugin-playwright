@@ -38,7 +38,7 @@ export const setLogger = (logger?: LaunchOptions['logger']) => {
  * 调试日志
  * @param args - 日志参数
  */
-export const debug = (...args: any[]) => {
+export const debugLog = (...args: any[]) => {
   if (logFn) {
     logFn('debug', ...args)
   }
@@ -77,7 +77,7 @@ export const createContext = (
  */
 export const setupBrowserMonitoring = (ctx: PlaywrightContext) => {
   ctx.browser.on('disconnected', () => {
-    debug('浏览器连接断开')
+    debugLog('浏览器连接断开')
   })
 }
 
@@ -94,17 +94,20 @@ export const initBrowser = async (options: LaunchOptions = {}) => {
   const browserType = options.downloadBrowser || 'chromium'
   let browser: Browser
 
+  // 提取Playwright支持的选项
+  const { downloadBrowser, debug, maxPages, idleTime, hmr, logger, ...playwrightOptions } = options
+
   // 选择浏览器类型
   switch (browserType) {
     case 'firefox':
-      browser = await firefox.launch(options)
+      browser = await firefox.launch(playwrightOptions)
       break
     case 'webkit':
-      browser = await webkit.launch(options)
+      browser = await webkit.launch(playwrightOptions)
       break
     case 'chromium':
     default:
-      browser = await chromium.launch(options)
+      browser = await chromium.launch(playwrightOptions)
       break
   }
 
@@ -121,9 +124,9 @@ export const initBrowser = async (options: LaunchOptions = {}) => {
     try {
       await context.close()
       await browser.close()
-      debug('浏览器已关闭')
+      debugLog('浏览器已关闭')
     } catch (error) {
-      debug('关闭浏览器失败:', error)
+      debugLog('关闭浏览器失败:', error)
     }
   }
 
@@ -137,17 +140,17 @@ export const initBrowser = async (options: LaunchOptions = {}) => {
     ctx.config = newConfig
 
     if (newConfig.hmr === true) {
-      debug('检测到hmr为true，正在重载浏览器...')
+      debugLog('检测到hmr为true，正在重载浏览器...')
       try {
         await close()
         const { ctx: newCtx } = await initBrowser(newConfig)
         return newCtx
       } catch (error) {
-        debug('重载浏览器失败:', error)
+        debugLog('重载浏览器失败:', error)
         throw error
       }
     } else {
-      debug('更新配置，不重载浏览器')
+      debugLog('更新配置，不重载浏览器')
     }
     return ctx
   }
@@ -208,7 +211,7 @@ export const releasePage = async (ctx: PlaywrightContext, page: Page) => {
       await page.close()
     }
   } catch (error) {
-    debug('释放页面失败:', error)
+    debugLog('释放页面失败:', error)
     try {
       await page.close()
     } catch {}
