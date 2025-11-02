@@ -63,7 +63,7 @@ const getScreenshotByteSize = (payload: unknown, encoding?: string): number | un
  */
 const main = async () => {
   const config = getConfig()
-  
+
   // 设置日志回调
   config.logger = (level, ...args) => {
     switch (level) {
@@ -83,7 +83,7 @@ const main = async () => {
   }
 
   const browser = await launch(config)
-  
+
   // 监听热更新事件
   karin.on(HMR_KEY, (cfg: LaunchOptions) => browser.hmrConfig(cfg))
 

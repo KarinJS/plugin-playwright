@@ -8,6 +8,6 @@ export default defineConfig({
   format: 'esm',
   dts: true,
   clean: true,
-  external: ['node-karin', 'playwright'],
+  external: [/^node-karin/, 'playwright'],
   outDir: 'dist',
 })

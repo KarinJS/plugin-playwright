@@ -16,7 +16,7 @@ importers:
         specifier: ^22.8.6
         version: 22.18.13
       node-karin:
-        specifier: ^1.7.12
+        specifier: ^1.12.2
         version: 1.12.2
       tsdown:
         specifier: ^0.15.12
