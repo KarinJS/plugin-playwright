@@ -22,8 +22,9 @@
   ],
   "scripts": {
     "build": "tsc --noEmit && tsdown",
-    "dev": "tsx src/index.ts",
-    "dev:test": "node dist/index.js"
+    "dev": "tsx src/app.ts",
+    "dev:test": "node dist/index.js",
+    "pub": "npm publish --access public"
   },
   "dependencies": {
     "playwright": "^1.48.2"
@@ -58,8 +59,5 @@
         "comment": "是否跳过浏览器下载"
       }
     ]
-  },
-  "engines": {
-    "node": ">=18.0.0"
   }
 }

@@ -14,28 +14,28 @@ export const launch = async (options: LaunchOptions = {}) => {
     /**
      * 浏览器上下文
      */
-    get ctx() {
+    get ctx () {
       return ctx
     },
 
     /**
      * 获取浏览器实例
      */
-    get browser() {
+    get browser () {
       return ctx.browser
     },
 
     /**
      * 获取浏览器上下文
      */
-    get context() {
+    get context () {
       return ctx.context
     },
 
     /**
      * 获取浏览器配置
      */
-    get config() {
+    get config () {
       return ctx.config
     },
 
@@ -44,7 +44,7 @@ export const launch = async (options: LaunchOptions = {}) => {
      * @param options - 截图选项
      * @returns 截图结果
      */
-    screenshot: <T extends Encoding, M extends MultiPage>(
+    screenshot: <T extends Encoding, M extends MultiPage> (
       options: ScreenshotOptions & { encoding?: T; multiPage?: M }
     ) => screenshot<T, M>(ctx, options),
 

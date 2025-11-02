@@ -106,6 +106,7 @@ export const initBrowser = async (options: LaunchOptions = {}) => {
     // 继续尝试启动，让 Playwright 给出更详细的错误信息
   }
 
+
   // 选择浏览器类型
   switch (browserType) {
     case 'firefox':
@@ -121,10 +122,7 @@ export const initBrowser = async (options: LaunchOptions = {}) => {
   }
 
   // 创建浏览器上下文
-  const context = await browser.newContext({
-    viewport: null,
-    deviceScaleFactor: 1,
-  })
+  const context = await browser.newContext()
 
   /**
    * 关闭浏览器
@@ -203,7 +201,7 @@ export const getPage = async (ctx: PlaywrightContext): Promise<Page> => {
  */
 export const releasePage = async (ctx: PlaywrightContext, page: Page) => {
   ctx.activePages--
-  
+
   if (ctx.config.debug) {
     // debug模式下不关闭页面
     return
@@ -212,7 +210,7 @@ export const releasePage = async (ctx: PlaywrightContext, page: Page) => {
   try {
     // 清理页面状态
     await page.goto('about:blank')
-    
+
     // 将页面放回池中
     if (ctx.pagePool.length < (ctx.config.maxPages || 10)) {
       ctx.pagePool.push(page)
@@ -223,7 +221,7 @@ export const releasePage = async (ctx: PlaywrightContext, page: Page) => {
     debugLog('释放页面失败:', error)
     try {
       await page.close()
-    } catch {}
+    } catch { }
   }
 }
 
@@ -233,7 +231,7 @@ export const releasePage = async (ctx: PlaywrightContext, page: Page) => {
  * @param fn - 回调函数
  * @returns 回调函数返回值
  */
-export const withPage = async <T>(
+export const withPage = async <T> (
   ctx: PlaywrightContext,
   fn: (page: Page) => Promise<T>
 ): Promise<T> => {

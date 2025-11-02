@@ -2,8 +2,8 @@ import type { Page } from 'playwright'
 import type { PlaywrightContext } from './browser'
 import type { ScreenshotOptions, Encoding, MultiPage, ScreenshotResult } from '../types'
 import { withPage, debugLog } from './browser'
-import { existsSync } from 'fs'
-import { readFile } from 'fs/promises'
+import { existsSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
 
 /**
  * 判断是否为URL
@@ -83,7 +83,7 @@ const preparePage = async (page: Page, options: ScreenshotOptions, ctx: Playwrig
     const selectors = Array.isArray(options.waitForSelector)
       ? options.waitForSelector
       : [options.waitForSelector]
-    
+
     for (const selector of selectors) {
       await page.waitForSelector(selector, { timeout })
     }
@@ -94,7 +94,7 @@ const preparePage = async (page: Page, options: ScreenshotOptions, ctx: Playwrig
     const functions = Array.isArray(options.waitForFunction)
       ? options.waitForFunction
       : [options.waitForFunction]
-    
+
     for (const fn of functions) {
       await page.waitForFunction(fn, { timeout })
     }
@@ -167,7 +167,7 @@ const multiPageScreenshot = async (
   pageHeight: number
 ): Promise<Buffer[]> => {
   const screenshots: Buffer[] = []
-  
+
   // 获取页面总高度
   const totalHeight = await page.evaluate(`
     Math.max(
@@ -205,7 +205,7 @@ const multiPageScreenshot = async (
  * @param options - 截图选项
  * @returns 截图结果
  */
-export const screenshot = async <T extends Encoding = 'binary', M extends MultiPage = false>(
+export const screenshot = async <T extends Encoding = 'binary', M extends MultiPage = false> (
   ctx: PlaywrightContext,
   options: ScreenshotOptions & { encoding?: T; multiPage?: M }
 ): Promise<{
@@ -251,7 +251,7 @@ export const screenshot = async <T extends Encoding = 'binary', M extends MultiP
       }
     } catch (error) {
       debugLog(`截图失败 (尝试 ${i + 1}/${retry}):`, error)
-      
+
       if (i === retry - 1) {
         return {
           status: false,

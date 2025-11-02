@@ -1,5 +1,6 @@
-import { exec } from 'child_process'
-import { promisify } from 'util'
+import { exec, spawn } from 'node:child_process'
+import { promisify } from 'node:util'
+import { logger } from 'node-karin'
 
 const execAsync = promisify(exec)
 
@@ -10,30 +11,28 @@ const execAsync = promisify(exec)
  */
 export const installBrowser = async (browserType: 'chromium' | 'firefox' | 'webkit', silent: boolean = false): Promise<void> => {
   try {
-    console.log(`正在安装 ${browserType} 浏览器...`)
-    
+    logger.info(`正在安装 ${browserType} 浏览器...`)
+
     const command = `npx playwright install ${browserType}`
-    
+
     if (silent) {
       await execAsync(command)
     } else {
-      // 使用 spawn 来实时显示输出
-      const { spawn } = require('child_process')
       return new Promise((resolve, reject) => {
         const child = spawn('npx', ['playwright', 'install', browserType], {
           stdio: 'inherit',
           shell: true
         })
-        
+
         child.on('close', (code: number) => {
           if (code === 0) {
-            console.log(`${browserType} 浏览器安装完成`)
+            logger.info(`${browserType} 浏览器安装完成`)
             resolve()
           } else {
             reject(new Error(`浏览器安装失败，退出码: ${code}`))
           }
         })
-        
+
         child.on('error', (error: Error) => {
           reject(new Error(`浏览器安装失败: ${error.message}`))
         })
@@ -64,8 +63,8 @@ export const ensureBrowserInstalled = async (
   try {
     await installBrowser(browserType, silent)
   } catch (error) {
-    console.error(`浏览器安装检查失败: ${error instanceof Error ? error.message : String(error)}`)
-    console.error(`请手动运行: npx playwright install ${browserType}`)
+    logger.error(`浏览器安装检查失败: ${error instanceof Error ? error.message : String(error)}`)
+    logger.error(`请手动运行: npx playwright install ${browserType}`)
   }
 }
 
