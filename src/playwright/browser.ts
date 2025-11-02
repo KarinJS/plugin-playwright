@@ -1,5 +1,6 @@
 import { chromium, firefox, webkit, type Browser, type BrowserContext, type Page } from 'playwright'
 import type { LaunchOptions, ScreenshotOptions } from '../types'
+import { ensureBrowserInstalled } from './install'
 
 /**
  * Playwright浏览器上下文
@@ -96,6 +97,14 @@ export const initBrowser = async (options: LaunchOptions = {}) => {
 
   // 提取Playwright支持的选项
   const { downloadBrowser, debug, maxPages, idleTime, hmr, logger, ...playwrightOptions } = options
+
+  // 确保浏览器已安装
+  try {
+    await ensureBrowserInstalled(browserType, true, false)
+  } catch (error) {
+    debugLog('浏览器安装检查失败:', error)
+    // 继续尝试启动，让 Playwright 给出更详细的错误信息
+  }
 
   // 选择浏览器类型
   switch (browserType) {

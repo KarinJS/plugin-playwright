@@ -15,6 +15,7 @@
 - 📝 完整的 TypeScript 类型定义
 - 🎨 Web UI 配置界面
 - 📦 使用 tsdown 打包，零配置构建
+- 🤖 **自动检测并安装浏览器**（首次运行时自动下载）
 
 ## 环境要求
 
@@ -26,6 +27,15 @@
 
 ```bash
 pnpm add @karinjs/plugin-playwright
+```
+
+**注意**：首次运行时，插件会自动检测并下载所需的浏览器。如果您想手动安装浏览器，可以运行：
+
+```bash
+npx playwright install chromium
+# 或者安装其他浏览器
+npx playwright install firefox
+npx playwright install webkit
 ```
 
 ## 使用方法

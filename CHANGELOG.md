@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- Automatic browser installation detection and download on first run
+- `ensureBrowserInstalled` utility function for programmatic browser installation
+- `installBrowser` function to install browsers on demand
+
+### Fixed
+- Browser not found error on first run - plugin now automatically installs required browsers
+
 ## [1.0.0] - 2024-11-02
 
 ### Added
