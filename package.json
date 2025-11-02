@@ -1,0 +1,63 @@
+{
+  "name": "@karinjs/plugin-playwright",
+  "version": "1.0.0",
+  "description": "karin的 playwright截图、渲染插件",
+  "keywords": [
+    "karin",
+    "node-karin",
+    "karin-plugin",
+    "playwright",
+    "browser",
+    "headless"
+  ],
+  "license": "MIT",
+  "author": "KarinJS",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "!LICENSE",
+    "!README.md"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit && tsdown",
+    "dev": "tsx src/app.ts",
+    "dev:test": "node dist/index.js",
+    "pub": "npm publish --access public"
+  },
+  "dependencies": {
+    "playwright": "^1.48.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.6",
+    "node-karin": "^1.12.2",
+    "tsdown": "^0.15.12",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  },
+  "karin": {
+    "main": "src/index.ts",
+    "apps": [],
+    "ts-apps": [
+      "src/apps"
+    ],
+    "web": "dist/web.config.js",
+    "ts-web": "src/web.config.ts",
+    "files": [
+      "config"
+    ],
+    "env": [
+      {
+        "key": "PLAYWRIGHT_BROWSERS_PATH",
+        "value": "",
+        "comment": "Playwright浏览器缓存目录"
+      },
+      {
+        "key": "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD",
+        "value": "",
+        "comment": "是否跳过浏览器下载"
+      }
+    ]
+  }
+}
